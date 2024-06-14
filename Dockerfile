@@ -1,34 +1,33 @@
-FROM oven/bun:1 as base
+FROM oven/bun:1 AS base
 WORKDIR /usr/src/app
 
-# install dependencies into temp directory
-# this will cache them and speed up future builds
+# Install dependencies into temp directory for development
 FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+WORKDIR /temp/dev
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
 
-# install with --production (exclude devDependencies)
-RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+# Install only production dependencies into a separate temp directory
+WORKDIR /temp/prod
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile --production
 
-# copy node_modules from temp directory
-# then copy all (non-ignored) project files into the image
+# Copy node_modules and project files into the image for testing and building
 FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
+WORKDIR /usr/src/app
+COPY --from=install /temp/dev/node_modules ./node_modules
 COPY . .
 
-# [optional] tests & build
+# [Optional] Run tests and build
 ENV NODE_ENV=production
 RUN bun test
 
-# copy production dependencies and source code into final image
+# Prepare final release image
 FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/src .
-COPY --from=prerelease /usr/src/app/package.json .
+WORKDIR /usr/src/app
+COPY --from=prerelease /usr/src/app .
+COPY --from=install /temp/prod/node_modules ./node_modules
 
-# run the app
+# Run the app
 USER bun
-ENTRYPOINT [ "bun", "run", "start" ]
+ENTRYPOINT ["bun", "run", "start"]
