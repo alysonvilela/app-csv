@@ -7,7 +7,8 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
+
 export default {
   port: envs.port,
-  app
+  fetch: app.fetch, 
 }
