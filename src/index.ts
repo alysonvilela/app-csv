@@ -8,7 +8,7 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
-app.get('/upload', uploadFileController.handler)
+app.post('/upload', async(c) => await uploadFileController.handler(c))
 
 export default {
   port: envs.port,
