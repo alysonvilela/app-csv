@@ -1,6 +1,6 @@
 // import { UploadFileController } from "./controllers/upload-file-controller";
 import {  UploadFileController } from "./controllers/upload-file-controller";
-import { UploadFileUseCase } from "./use-cases/upload-file";
+import { UploadFileUseCase } from "./services/upload-file";
 import { LoggerSingleton } from "./utils/logger";
 
 export const logger = LoggerSingleton.getInstance();
