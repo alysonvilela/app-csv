@@ -1,33 +1,25 @@
-FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
+WORKDIR /app
 
-# Install dependencies into temp directory for development
-FROM base AS install
-WORKDIR /temp/dev
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Install only production dependencies into a separate temp directory
-WORKDIR /temp/prod
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile --production
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-# Copy node_modules and project files into the image for testing and building
-FROM base AS prerelease
-WORKDIR /usr/src/app
-COPY --from=install /temp/dev/node_modules ./node_modules
-COPY . .
 
-# [Optional] Run tests and build
-ENV NODE_ENV=production
-RUN bun test
+FROM gcr.io/distroless/nodejs20-debian11
 
-# Prepare final release image
-FROM base AS release
-WORKDIR /usr/src/app
-COPY --from=prerelease /usr/src/app .
-COPY --from=install /temp/prod/node_modules ./node_modules
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY --from=build /app/package.json /app/package.json
 
-# Run the app
-USER bun
-ENTRYPOINT ["bun", "run", "start"]
+WORKDIR /app
+
+EXPOSE 3000
+CMD [ "dist/index.js"]

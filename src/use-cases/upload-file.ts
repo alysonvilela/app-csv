@@ -4,14 +4,13 @@ import * as csv from "fast-csv";
 import { asyncScheduler, bufferCount, from } from "rxjs";
 import { LoggerSingleton } from "../utils/logger";
 import { CSVModel } from "../domain/csv-model";
-import { Context } from "hono";
 
 export class UploadFileUseCase {
 
     constructor(private readonly logger: LoggerSingleton) { }
 
     async execute(filePath: string) {
-        const startedtime = new Date().toISOString()
+        const startTime = new Date().getTime()
         this.logger.log(`startedtime`, new Date().toISOString())
         const file = createReadStream(filePath).pipe(
             csv.parse({ headers: false })
@@ -25,7 +24,7 @@ export class UploadFileUseCase {
                 next(value: CSVModel[]) {
                     logger.log(`${UploadFileUseCase.name}`, "run 10000");
 
-        
+
 
                     // asyncScheduler.schedule(async () => {
                     //     // SEND 1000 DATA TO DATABASE
@@ -35,7 +34,10 @@ export class UploadFileUseCase {
                     logger.log(`${UploadFileUseCase.name} error`, err);
                 },
                 complete() {
-                    logger.log(`${UploadFileUseCase.name}`, "complete " + "start: " + startedtime+ ", end: " + new Date().toISOString());
+                    const endTime = new Date().getTime();
+                    const timeDifference = endTime - startTime;
+                    const seconds = timeDifference / 1000
+                    logger.log(`${UploadFileUseCase.name}`, ["complete.", "Time spent (in seconds):", seconds]);
                 },
             });
     }
