@@ -1,4 +1,4 @@
-
+import * as PubSub from 'pubsub-js'
 import { ClientQueueSingleton } from "./client-queue";
 import { BulkDbInsertCommand } from "../../services/bulk-db-insert";
 import { InvoiceQueueSingleton } from "./invoice-queue";
@@ -9,9 +9,10 @@ let subscribe = vi.fn()
 
 vi.mock("pubsub-js")
 vi.mock("pubsub-js", async (importOriginal) => {
+    const old = await importOriginal<typeof import("pubsub-js")>()
     return {
-        ...await importOriginal<typeof import("pubsub-js")>(),
-        // this will only affect "foo" outside of the original module
+        ...old,
+        clearAllSubscriptions: old.clearAllSubscriptions,
         publish: (...args: any[]) => publish(...args),
         subscribe: (...args: any[]) => subscribe(...args),
     }
@@ -35,7 +36,7 @@ describe(ClientQueueSingleton.name, () => {
 
     afterEach(() => {
         vi.clearAllMocks()
-        // PubSub.clearAllSubscriptions()
+        PubSub.clearAllSubscriptions()
     })
 
     it('should call resolver when a publish happen', async () => {
