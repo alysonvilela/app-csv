@@ -4,7 +4,10 @@ import { InvoiceQueueSingleton } from "../lib/queues/invoice-queue";
 import { ClientRepository } from "./repositories/client.repository";
 
 export class BulkDbInsertCommand {
-    constructor(private readonly invoiceQueue: InvoiceQueueSingleton, private readonly clientRepository: ClientRepository) { }
+    constructor(
+        private readonly invoiceQueue: InvoiceQueueSingleton,
+        private readonly clientRepository: ClientRepository
+    ) { }
 
     async execute(data: CSVModel[]) {
         await this.clientRepository.insertMultiple(data)

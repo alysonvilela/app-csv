@@ -5,9 +5,9 @@ import { SendEmailCommand } from "../../services/send-email";
 
 export class EmailQueueSingleton {
     private static instance: EmailQueueSingleton | null = null
-    private topic = "email-queue";
+    public topic = "email-queue";
 
-    private constructor(private readonly command: (data: CSVModel) => Promise<void>) {
+    constructor(private readonly command: (data: CSVModel) => Promise<void>) {
         subscribe(this.topic, (_topic, data) => {
             asyncScheduler.schedule(async() => {
                 await this.command(data as unknown as CSVModel)

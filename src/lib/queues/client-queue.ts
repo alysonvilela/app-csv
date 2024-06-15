@@ -3,20 +3,22 @@ import { asyncScheduler } from "rxjs";
 import { CSVModel } from "../../domain/csv-model";
 import { BulkDbInsertCommand } from "../../services/bulk-db-insert";
 
+
+type Command = (data: CSVModel[]) => Promise<void>
 export class ClientQueueSingleton {
     private static instance: ClientQueueSingleton | null = null
     public topic = "client-queue";
 
     constructor(
-        private readonly command: BulkDbInsertCommand) {
+        private readonly command: Command) {
         subscribe(this.topic, (_topic, data) => {
             asyncScheduler.schedule(async () => {
-                await this.command.execute(data)
+                await this.command(data)
             })
         })
     }
 
-    public static getInstance(command: BulkDbInsertCommand): ClientQueueSingleton {
+    public static getInstance(command: Command): ClientQueueSingleton {
         if (!this.instance) {
             this.instance = new ClientQueueSingleton(command);
         }

@@ -19,7 +19,7 @@ export const invoiceQueue = InvoiceQueueSingleton.getInstance()
 
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)
 
-export const clientQueue = ClientQueueSingleton.getInstance(bulkDbInsertCommand)
+export const clientQueue = ClientQueueSingleton.getInstance(bulkDbInsertCommand.execute)
 
 // Commands
 export const uploadFileUseCase = new UploadFileUseCase(logger, clientQueue)
