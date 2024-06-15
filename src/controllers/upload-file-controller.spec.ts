@@ -29,7 +29,9 @@ describe(UploadFileController.name, () => {
         // vi.spyOn(clientQueue, 'pub').mockImplementation((_args) => null)
     })
 
-    afterEach(() => { })
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
 
 
     it('should download file and invoke usecase', async () => {
