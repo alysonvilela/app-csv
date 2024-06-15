@@ -3,6 +3,7 @@ import { uploadFileController } from './ioc'
 import fastify from 'fastify'
 import multipart from '@fastify/multipart'
 import "./lib/queues/producers"
+import "./ioc"
 
 const app = fastify()
 

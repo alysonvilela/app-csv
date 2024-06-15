@@ -7,7 +7,6 @@ export class SendEmailCommand {
 
     async execute(data: CSVModel) {
         await new Promise((res) => setTimeout(res, 5000))
-
         console.log(new Date(), counter++)
     }
 }

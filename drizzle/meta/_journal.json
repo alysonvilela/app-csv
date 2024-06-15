@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1718480145632,
+      "tag": "0000_mean_living_tribunal",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1718483575248,
+      "tag": "0001_abnormal_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718486283458,
+      "tag": "0002_mute_triton",
+      "breakpoints": true
+    }
+  ]
+}

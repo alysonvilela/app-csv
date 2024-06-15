@@ -1,0 +1,75 @@
+{
+  "id": "33473646-f4f2-4514-8ee2-ed1f60bc0f47",
+  "prevId": "36b48a85-8384-4e1e-bcd8-0e784a2f107a",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.client": {
+      "name": "client",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "governmentId": {
+          "name": "governmentId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "debtAmount": {
+          "name": "debtAmount",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "debtDueDate": {
+          "name": "debtDueDate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "debtId": {
+          "name": "debtId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "client_email_unique": {
+          "name": "client_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

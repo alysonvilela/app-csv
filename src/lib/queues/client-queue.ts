@@ -2,7 +2,7 @@ import { subscribe, publish } from "pubsub-js";
 import { asyncScheduler } from "rxjs";
 import { CSVModel } from "../../domain/csv-model";
 import { BulkDbInsertCommand } from "../../services/bulk-db-insert";
-import { invoiceQueue } from "../../ioc";
+import { clientRepository, invoiceQueue } from "../../ioc";
 
 export class ClientQueueSingleton {
     private static instance: ClientQueueSingleton | null = null
@@ -10,7 +10,7 @@ export class ClientQueueSingleton {
 
     private constructor(private readonly command: BulkDbInsertCommand) {
         subscribe(this.topic, (_topic, data) => {
-            asyncScheduler.schedule(async() => {
+            asyncScheduler.schedule(async () => {
                 await this.command.execute(data)
             })
         })
@@ -18,7 +18,7 @@ export class ClientQueueSingleton {
 
     public static getInstance(): ClientQueueSingleton {
         if (!this.instance) {
-            const command = new BulkDbInsertCommand(invoiceQueue)
+            const command = new BulkDbInsertCommand(invoiceQueue, clientRepository)
             this.instance = new ClientQueueSingleton(command);
         }
 

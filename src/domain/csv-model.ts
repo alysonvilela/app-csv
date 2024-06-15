@@ -4,5 +4,5 @@ export interface CSVModel {
     email: string
     debtAmount: number
     debtDueDate: Date
-    debtID: string
+    debtId: string
 }
