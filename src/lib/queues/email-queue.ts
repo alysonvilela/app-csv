@@ -8,7 +8,7 @@ export class EmailQueueSingleton {
     private topic = "email-queue";
 
     private constructor(private readonly command: (data: CSVModel) => Promise<void>) {
-        subscribe(this.topic, (data) => {
+        subscribe(this.topic, (_topic, data) => {
             asyncScheduler.schedule(async() => {
                 await this.command(data as unknown as CSVModel)
             })

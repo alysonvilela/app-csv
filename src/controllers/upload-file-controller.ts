@@ -1,14 +1,31 @@
+import { z } from "zod";
 import { UploadFileUseCase } from "../services/upload-file";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { Readable } from "node:stream";
 
+const dataDTO = z.object({
+    fieldname: z.enum(["csv"]),
+    file: z.instanceof(Readable),
+})
 
 export class UploadFileController {
     constructor(private readonly uploadFileUseCase: UploadFileUseCase) { }
-    async handler(_req: FastifyRequest, reply: FastifyReply) {
+    async handler(req: FastifyRequest, reply: FastifyReply) {
 
-        const filePath = process.cwd() + "/files/" + "example-input.csv"
+        const data = await req.file({
+            limits: {
+                fileSize: 1024 * 1024 * 1024, // 1GB,
+            },
+        })
 
-        this.uploadFileUseCase.execute(filePath)
+        const { success, data: result } = dataDTO.safeParse(data)
+        if (!success) {
+            return reply.code(400).send({
+                message: "Invalid file format"
+            })
+        }
+
+        this.uploadFileUseCase.execute(result.file)
 
         return reply.code(200).send({
             success: true

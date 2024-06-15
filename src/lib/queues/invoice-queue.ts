@@ -9,7 +9,7 @@ export class InvoiceQueueSingleton {
     private topic = "invoice-queue";
 
     private constructor(private readonly command: MakeInvoiceCommand) {
-        subscribe(this.topic, (data) => {
+        subscribe(this.topic, (_topic, data) => {
             asyncScheduler.schedule(async() => {
                 await this.command.execute(data as unknown as CSVModel)
             })
@@ -19,7 +19,6 @@ export class InvoiceQueueSingleton {
     public static getInstance(): InvoiceQueueSingleton {
         if (!this.instance) {
             const emailQueue = EmailQueueSingleton.getInstance()
-            console.log(emailQueue)
             const command = new MakeInvoiceCommand(emailQueue)
             this.instance = new InvoiceQueueSingleton(command);
         }
