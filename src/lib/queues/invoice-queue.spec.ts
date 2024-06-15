@@ -1,6 +1,5 @@
 import * as PubSub from 'pubsub-js'
-import { ClientQueueSingleton } from "./client-queue";
-import { BulkDbInsertCommand } from "../../services/bulk-db-insert";
+import { InvoiceQueueSingleton } from './invoice-queue'
 
 let publish = vi.fn()
 let subscribe = vi.fn()
@@ -17,17 +16,13 @@ vi.mock("pubsub-js", async (importOriginal) => {
 })
 
 
-describe(ClientQueueSingleton.name, () => {
+describe(InvoiceQueueSingleton.name, () => {
 
     let subscribeResolver = vi.fn().mockResolvedValue({})
-    let iot: ClientQueueSingleton
+    let iot: InvoiceQueueSingleton
 
     beforeEach(() => {
-        iot = new ClientQueueSingleton(subscribeResolver)
-
-        vi.spyOn(BulkDbInsertCommand.prototype, 'execute').mockImplementation(async (...args) => {
-            subscribeResolver(args)
-        })
+        iot = new InvoiceQueueSingleton(subscribeResolver)
     })
 
     afterEach(() => {
@@ -45,9 +40,9 @@ describe(ClientQueueSingleton.name, () => {
             name: "1"
         }
 
-        iot.pub([data])
+        iot.pub(data)
 
-        expect(publish).toBeCalledWith(iot.topic, [data])
+        expect(publish).toBeCalledWith(iot.topic, data)
         expect(subscribe).toBeCalledWith(iot.topic, expect.any(Function))
     })
 

@@ -1,7 +1,6 @@
 import { subscribe, publish } from "pubsub-js";
 import { asyncScheduler } from "rxjs";
 import { CSVModel } from "../../domain/csv-model";
-import { BulkDbInsertCommand } from "../../services/bulk-db-insert";
 
 
 type Command = (data: CSVModel[]) => Promise<void>

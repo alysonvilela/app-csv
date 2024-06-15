@@ -6,6 +6,7 @@ import { PgClientRepository } from "./services/repositories/pg-client.repository
 import { BulkDbInsertCommand } from "./services/bulk-db-insert";
 import { UploadFileUseCase } from "./services/upload-file";
 import { UploadFileController } from "./controllers/upload-file-controller";
+import { MakeInvoiceCommand } from "./services/make-invoice";
 
 // Logger
 export const logger = LoggerSingleton.getInstance();
@@ -13,12 +14,13 @@ export const logger = LoggerSingleton.getInstance();
 // Repositories
 export const clientRepository = new PgClientRepository(logger);
 
-// Queues
+// Queues and callbacks
 export const emailQueue = EmailQueueSingleton.getInstance()
-export const invoiceQueue = InvoiceQueueSingleton.getInstance()
+
+export const makeInvoiceCommand = new MakeInvoiceCommand(emailQueue)
+export const invoiceQueue = InvoiceQueueSingleton.getInstance(makeInvoiceCommand.execute)
 
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)
-
 export const clientQueue = ClientQueueSingleton.getInstance(bulkDbInsertCommand.execute)
 
 // Commands

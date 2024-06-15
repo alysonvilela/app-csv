@@ -4,22 +4,22 @@ import { CSVModel } from "../../domain/csv-model";
 import { asyncScheduler } from "rxjs";
 import { EmailQueueSingleton } from "./email-queue";
 
+type Command = (data: CSVModel) => Promise<void>
+
 export class InvoiceQueueSingleton {
     private static instance: InvoiceQueueSingleton | null = null
-    private topic = "invoice-queue";
+    public topic = "invoice-queue";
 
-    private constructor(private readonly command: MakeInvoiceCommand) {
-        subscribe(this.topic, (_topic, data) => {
+    constructor(private readonly command: Command) {
+        subscribe(this.topic, (_topic, data: CSVModel) => {
             asyncScheduler.schedule(async() => {
-                await this.command.execute(data as unknown as CSVModel)
+                await this.command(data)
             })
         })
     }
 
-    public static getInstance(): InvoiceQueueSingleton {
+    public static getInstance(command: Command): InvoiceQueueSingleton {
         if (!this.instance) {
-            const emailQueue = EmailQueueSingleton.getInstance()
-            const command = new MakeInvoiceCommand(emailQueue)
             this.instance = new InvoiceQueueSingleton(command);
         }
 
