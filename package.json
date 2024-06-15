@@ -5,7 +5,8 @@
     "start:clusters": "pm2 start dist/index.js -i 5",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "build": "tsup src"
+    "test": "vitest --no-isolate",
+    "build": "tsup"
   },
   "dependencies": {
     "@fastify/multipart": "^8.3.0",
@@ -22,12 +23,12 @@
     "tsx": "^4.15.4",
     "typescript": "^5.4.5",
     "ulidx": "^2.3.0",
-    "vitest": "^1.6.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/pubsub-js": "^1.8.6",
     "drizzle-kit": "^0.22.7",
-    "postgres": "^3.4.4"
+    "postgres": "^3.4.4",
+    "vitest": "^1.6.0"
   }
 }

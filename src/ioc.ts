@@ -7,16 +7,16 @@ import { BulkDbInsertCommand } from "./services/bulk-db-insert";
 import { UploadFileUseCase } from "./services/upload-file";
 import { UploadFileController } from "./controllers/upload-file-controller";
 
+// Logger
+export const logger = LoggerSingleton.getInstance();
 
 // Repositories
-export const clientRepository = new PgClientRepository();
+export const clientRepository = new PgClientRepository(logger);
 
 // Queues
-export const logger = LoggerSingleton.getInstance();
 export const emailQueue = EmailQueueSingleton.getInstance()
 export const invoiceQueue = InvoiceQueueSingleton.getInstance()
 export const clientQueue = ClientQueueSingleton.getInstance()
-
 
 // Commands
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)

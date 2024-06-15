@@ -50,9 +50,6 @@ importers:
       ulidx:
         specifier: ^2.3.0
         version: 2.3.0
-      vitest:
-        specifier: ^1.6.0
-        version: 1.6.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -66,6 +63,9 @@ importers:
       postgres:
         specifier: ^3.4.4
         version: 3.4.4
+      vitest:
+        specifier: ^1.6.0
+        version: 1.6.0
 
 packages:
 
