@@ -1,9 +1,8 @@
 import { envs } from './envs'
-import { uploadFileController } from './ioc'
+import { listClientsHistoryController, uploadFileController } from './ioc'
 import fastify from 'fastify'
 import multipart from '@fastify/multipart'
 import "./ioc"
-import { ListClientsController } from './controllers/list-clients-controller'
 
 const app = fastify()
 
