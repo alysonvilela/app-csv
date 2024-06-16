@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "ES2022",
     "module": "commonjs",
     "strict": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "types": ["vitest/globals"]
   }
 }

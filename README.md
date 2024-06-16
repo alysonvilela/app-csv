@@ -1,3 +1,6 @@
+
+Average time to process: 10s
+
 To install dependencies:
 ```sh
 bun install
