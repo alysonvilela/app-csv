@@ -2,9 +2,12 @@ import { envs } from './envs'
 import { listClientsHistoryController, uploadFileController } from './ioc'
 import fastify from 'fastify'
 import multipart from '@fastify/multipart'
+import cors from '@fastify/cors'
 import "./ioc"
 
 const app = fastify()
+
+app.register(cors)
 
 app.register(multipart, {
   // attachFieldsToBody: true,
