@@ -1,4 +1,4 @@
-import { serial, text, pgTable, uuid } from "drizzle-orm/pg-core";
+import { serial, text, pgTable } from "drizzle-orm/pg-core";
 
 
 export const client = pgTable("client", {

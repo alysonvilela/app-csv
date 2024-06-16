@@ -14,7 +14,7 @@ app.register(multipart, {
 });
 
 app.post('/upload', async (req, reply) => await uploadFileController.handler(req, reply));
-app.post('/history', async (req, reply) => await listClientsHistoryController.handler(req, reply));
+app.get('/history', async (req, reply) => await listClientsHistoryController.handler(req, reply));
 
 app.listen({ host: "0.0.0.0", port: envs.port }, function (err) {
   if (err) {
