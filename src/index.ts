@@ -7,7 +7,13 @@ import "./ioc"
 
 const app = fastify()
 
-app.register(cors)
+app.register(cors,
+  {
+    origin: envs.corsUrls,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+)
 
 app.register(multipart, {
   // attachFieldsToBody: true,
