@@ -10,3 +10,5 @@ export const client = pgTable("client", {
     debtDueDate: text("debtDueDate"),
     debtId: text("debtId"),
 });
+
+export type Client = typeof client.$inferSelect;

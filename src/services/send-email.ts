@@ -1,12 +1,15 @@
 import { unsubscribe } from "pubsub-js";
 import { CSVModel } from "../domain/csv-model";
+import { LoggerSingleton } from "../lib/logger";
 
-let counter = 0
+let sentEmails = 0
 export class SendEmailCommand {
-    constructor() { }
+    constructor(
+        private readonly logger: LoggerSingleton
+    ) {}
 
-    async execute(data: CSVModel) {
+    async execute(_data: CSVModel) {
         await new Promise((res) => setTimeout(res, 5000))
-        console.log(new Date(), counter++)
+        this.logger.log(SendEmailCommand.name, ["made-invoices", sentEmails++])
     }
 }
