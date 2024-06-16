@@ -18,7 +18,7 @@ export class UploadFileController {
             },
         })
 
-        const { success, data: result, error } = dataDTO.safeParse(data)
+        const { success, data: result } = dataDTO.safeParse(data)
         if (!success) {
             return reply.code(400).send({
                 message: "Invalid file format"

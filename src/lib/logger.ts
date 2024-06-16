@@ -1,7 +1,7 @@
 export class LoggerSingleton {
     private static instance: LoggerSingleton | null = null;
 
-    private constructor() { }
+    constructor() { }
     public static getInstance(): LoggerSingleton {
         if (!this.instance) {
             this.instance = new LoggerSingleton();

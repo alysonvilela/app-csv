@@ -15,7 +15,7 @@ export class UploadFileUseCase {
 
     async execute(file: Readable) {
         const startTime = new Date().getTime()
-        this.logger.log(`startedtime`, new Date().toISOString())
+        this.logger.log(`startedtime`, startTime)
         const stream = file.pipe(
             csv.parse({ headers: true })
         );
@@ -37,7 +37,7 @@ export class UploadFileUseCase {
                     logger.log(`${UploadFileUseCase.name} error`, err);
                 },
                 complete() {
-                    const endTime = new Date().getTime();
+                    const endTime = Date.now();
                     const timeDifference = endTime - startTime;
                     const seconds = timeDifference / 1000
                     logger.log(`${UploadFileUseCase.name}`, ["complete.", "Time spent (in seconds):", seconds]);

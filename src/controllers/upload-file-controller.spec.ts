@@ -23,10 +23,6 @@ describe(UploadFileController.name, () => {
     beforeEach(() => {
         uploadFileUseCase = new UploadFileUseCase(logger, clientQueue)
         iot = new UploadFileController(uploadFileUseCase)
-
-        // vi.spyOn(UploadFileUseCase.prototype, 'execute').mockImplementation(async (_args) => await Promise.resolve())
-        // vi.spyOn(logger, 'log').mockImplementation((_args) => null)
-        // vi.spyOn(clientQueue, 'pub').mockImplementation((_args) => null)
     })
 
     afterEach(() => {
