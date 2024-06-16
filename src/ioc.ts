@@ -7,6 +7,8 @@ import { BulkDbInsertCommand } from "./services/bulk-db-insert";
 import { UploadFileUseCase } from "./services/upload-file";
 import { UploadFileController } from "./controllers/upload-file-controller";
 import { MakeInvoiceCommand } from "./services/make-invoice";
+import { ListClientsUseCase } from "./services/list-clients";
+import { ListClientsController } from "./controllers/list-clients-controller";
 
 // Logger
 export const logger = LoggerSingleton.getInstance();
@@ -23,6 +25,10 @@ export const invoiceQueue = InvoiceQueueSingleton.getInstance(makeInvoiceCommand
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)
 export const clientQueue = ClientQueueSingleton.getInstance(bulkDbInsertCommand.execute)
 
-// Commands
+// Services
 export const uploadFileUseCase = new UploadFileUseCase(logger, clientQueue)
+export const listClientsUseCase = new ListClientsUseCase(logger, clientRepository)
+
+// Commands
 export const uploadFileController = new UploadFileController(uploadFileUseCase)
+export const listClientsHistoryController = new ListClientsController(listClientsUseCase)
