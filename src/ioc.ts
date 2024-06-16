@@ -17,7 +17,7 @@ export const clientRepository = new PgClientRepository(logger);
 // Queues and callbacks
 export const emailQueue = EmailQueueSingleton.getInstance()
 
-export const makeInvoiceCommand = new MakeInvoiceCommand(emailQueue)
+export const makeInvoiceCommand = new MakeInvoiceCommand(logger, emailQueue)
 export const invoiceQueue = InvoiceQueueSingleton.getInstance(makeInvoiceCommand.execute)
 
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)

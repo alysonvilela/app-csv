@@ -5,8 +5,8 @@ import { EmailQueueSingleton } from "../lib/queues/email-queue";
 let madeInvoices = 0
 export class MakeInvoiceCommand {
     constructor(
+        private readonly logger: LoggerSingleton,
         private readonly sendEmailQueue: EmailQueueSingleton,
-        private readonly logger: LoggerSingleton
     ) { }
 
     async execute(data: CSVModel) {
