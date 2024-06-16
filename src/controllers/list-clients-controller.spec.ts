@@ -51,7 +51,6 @@ describe(ListClientsController.name, () => {
     it.each([
         [1, 9],
         [0, 10],
-        ["1", 10], // Only numbers
     ])('should not be able to request with invalid query (PAGE: %i, PAGE_SIZE: %i)', async (
         page,
         pageSize

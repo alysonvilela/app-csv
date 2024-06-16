@@ -1,7 +1,6 @@
 import { subscribe, publish } from "pubsub-js";
 import { CSVModel } from "../../domain/csv-model";
 import { asyncScheduler } from "rxjs";
-import { SendEmailCommand } from "../../services/send-email";
 
 type Command = (data: CSVModel) => Promise<void>
 export class EmailQueueSingleton {
@@ -16,10 +15,9 @@ export class EmailQueueSingleton {
         })
     }
 
-    public static getInstance(): EmailQueueSingleton {
+    public static getInstance(command: Command): EmailQueueSingleton {
         if (!this.instance) {
-            const execute = new SendEmailCommand().execute
-            this.instance = new EmailQueueSingleton(execute);
+            this.instance = new EmailQueueSingleton(command);
         }
 
         return this.instance;

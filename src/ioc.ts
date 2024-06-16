@@ -9,6 +9,7 @@ import { UploadFileController } from "./controllers/upload-file-controller";
 import { MakeInvoiceCommand } from "./services/make-invoice";
 import { ListClientsUseCase } from "./services/list-clients";
 import { ListClientsController } from "./controllers/list-clients-controller";
+import { SendEmailCommand } from "./services/send-email";
 
 // Logger
 export const logger = LoggerSingleton.getInstance();
@@ -17,13 +18,15 @@ export const logger = LoggerSingleton.getInstance();
 export const clientRepository = new PgClientRepository(logger);
 
 // Queues and callbacks
-export const emailQueue = EmailQueueSingleton.getInstance()
+export const sendEmailCommand = new SendEmailCommand(logger)
+export const emailQueue = EmailQueueSingleton.getInstance((data) => sendEmailCommand.execute(data))
 
 export const makeInvoiceCommand = new MakeInvoiceCommand(logger, emailQueue)
-export const invoiceQueue = InvoiceQueueSingleton.getInstance(makeInvoiceCommand.execute)
+export const invoiceQueue = InvoiceQueueSingleton.getInstance((data) => makeInvoiceCommand.execute(data))
+
 
 export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)
-export const clientQueue = ClientQueueSingleton.getInstance(bulkDbInsertCommand.execute)
+export const clientQueue = ClientQueueSingleton.getInstance((data) => bulkDbInsertCommand.execute(data))
 
 // Services
 export const uploadFileUseCase = new UploadFileUseCase(logger, clientQueue)
