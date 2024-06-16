@@ -15,7 +15,27 @@ export class ListClientsUseCase {
 
     async execute(params: HistoryParams) {
         this.logger.log(ListClientsUseCase.name, 'Running query all paginated')
+        const count = await this.clientRepository.queryAllCount()
+
+        const lastAvailablePage = Math.ceil(count / params.pageSize)
+        if(params.page > lastAvailablePage) {
+            return {
+                data: [],
+                total: count
+            }
+        }
+
+        if (count === 0) {
+            return {
+                data: [],
+                total: 0
+            }
+        }
+
         const res = await this.clientRepository.queryAll(params)
-        return res
+        return {
+            data: res,
+            total: count
+        }
     }
 }

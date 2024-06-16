@@ -9,4 +9,5 @@ export interface PaginatedParams {
 export abstract class ClientRepository {
     abstract insertMultiple(data: CSVModel[]): Promise<void>
     abstract queryAll(params: PaginatedParams): Promise<Client[]>
+    abstract queryAllCount(): Promise<number>
 }

@@ -7,6 +7,9 @@ export class InMemoryClientRepository implements ClientRepository {
     db: Client[] = []
 
     constructor() { }
+    async queryAllCount(): Promise<number> {
+        return this.db.length
+    }
 
     async insertMultiple(data: CSVModel[]): Promise<void> {
         this.db.push(...data.map((i): Client => ({

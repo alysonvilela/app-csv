@@ -15,13 +15,7 @@ describe(ListClientsUseCase.name, () => {
         }
         clientRepository = new InMemoryClientRepository()
         iot = new ListClientsUseCase(logger, clientRepository)
-    })
 
-    afterEach(() => {
-        vi.clearAllMocks()
-    })
-
-    it('should list paginated clients', async () => {
         const data: Client = {
             debtAmount: 1,
             debtDueDate: new Date().toISOString(),
@@ -43,12 +37,25 @@ describe(ListClientsUseCase.name, () => {
         }))]
 
         repo.db = mockedData
+    })
 
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
+
+    it('should list paginated clients', async () => {
         const res = await iot.execute({ page: 1, pageSize: 10 })
-        expect(res).toHaveLength(10)
+        expect(res.data).toHaveLength(10)
+        expect(res.total).toBe(12)
 
         const res2 = await iot.execute({ page: 2, pageSize: 10 })
-        expect(res2).toHaveLength(2)
+        expect(res2.data).toHaveLength(2)
+    })
+
+    it('should not be able to fetch unexisting page', async () => {
+        const res = await iot.execute({ page: 3, pageSize: 10 })
+        expect(res.data).toEqual([])
+        expect(res.total).toBe(12)
     })
 
 })

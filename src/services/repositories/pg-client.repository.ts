@@ -4,9 +4,20 @@ import { db } from "../../lib/db";
 import { Client, client } from "../../schema";
 import { ClientRepository, PaginatedParams } from "./client.repository";
 import { LoggerSingleton } from "../../lib/logger";
+import { sql } from "drizzle-orm";
 
 export class PgClientRepository implements ClientRepository {
     constructor(private readonly logger: LoggerSingleton) { }
+    async queryAllCount(): Promise<number> {
+        try {
+            this.logger.log(PgClientRepository.name, 'Running query all count')
+            const [{ count }] = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(client)
+            return count
+        } catch (err) {
+            this.logger.log(PgClientRepository.name, 'FAIL on query all count')
+            return 0
+        }
+    }
 
     async queryAll(params: PaginatedParams): Promise<Client[]> {
         try {
@@ -16,7 +27,7 @@ export class PgClientRepository implements ClientRepository {
                 orderBy: (clients, { asc }) => asc(clients.id),
                 limit: params.pageSize,
                 offset: (params.page - 1) * params.pageSize,
-              });
+            });
 
             return clients
         } catch (err) {
