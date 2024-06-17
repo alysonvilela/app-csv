@@ -16,17 +16,21 @@
 - **PNPM**: Gerenciador de pacotes.
 
 ## Instalação e Configuração
+Após o clone do projeto siga as instruções para os seguintes casos:
+Para instalar e configurar o projeto, siga os passos abaixo:
 
-Para instalar e configurar o projeto, sigo os passos abaixo:
-
-1. Crio um arquivo `.env` na raiz do projeto e adiciono as variáveis de ambiente conforme o modelo descrito no arquivo `.env.example` também disponível na raiz do projeto.
-2. Instalo as dependências do projeto: `pnpm i`
-3. Realizo as migrações no meu banco PostgreSQL: `pnpm db:migrate`
-4. Inicio uma instância do projeto: `pnpm dev`
+1. Criar um arquivo `.env` na raiz do projeto e adicionar as variáveis de ambiente conforme o modelo descrito no arquivo `.env.example` também disponível na raiz do projeto.
+2. Instalar as dependências do projeto: `pnpm i`
+3. Realizar as migrações no meu banco PostgreSQL: `pnpm db:migrate`
+4. Iniciar uma instância do projeto: `pnpm dev`
 
 Para builds:
-1. Compilo o código TypeScript: `pnpm build`
+1. Iniciar o código TypeScript: `pnpm build`
 2. Inicializo a aplicação: `pnpm start` ou em múltiplos clusters `pnpm start:clusters`, que permite que a mesma aplicação seja balanceada em 5 clusters (editável), proporcionando fluidez e maior performance.
+
+Para criar imagem containerizada(Docker):
+1. Com Docker e docker-compose instalados, inicialize o Docker Desktop
+2. Rode o comando `docker-compose up -d`
 
 ## Relatório de Caso
 
@@ -61,7 +65,6 @@ Para essa aplicação, minha recomendação é continuar com as orquestrações 
 Voltando para a aplicação atual, ela baixaria esse PDF, enviaria o email e excluiria o arquivo do bucket após o envio ser confirmado, ou utilizaria uma estratégia de TTL para excluir os arquivos do bucket.
 
 Outra decisão mais apropriada para esse serviço seria o uso de Buckets já nessa fase, com o upload de arquivos sendo feito diretamente nos serviços de armazenamento AWS, Cloudflare ou outros, utilizando estratégias de [presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html) e usando os eventos de inserção de objetos nos buckets para executar todas as etapas de processamento deste projeto.
-
 
 ## Testes
 Cada arquivo foi testado utilizando vitest.
