@@ -65,4 +65,6 @@ Outra decisão mais apropriada para esse serviço seria o uso de Buckets já nes
 
 ## Testes
 Cada arquivo foi testado utilizando vitest.
+
+
 <img width="431" alt="Captura de Tela 2024-06-16 às 20 14 44" src="https://github.com/alysonvilela/app-csv/assets/22202745/fea4ed51-87bb-4689-8fc2-ee5b92304bf8">
