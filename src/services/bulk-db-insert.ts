@@ -4,18 +4,18 @@ import { InvoiceQueueSingleton } from "../lib/queues/invoice-queue";
 import { ClientRepository } from "./repositories/client.repository";
 
 export class BulkDbInsertCommand {
-    constructor(
-        private readonly invoiceQueue: InvoiceQueueSingleton,
-        private readonly clientRepository: ClientRepository
-    ) { }
+  constructor(
+    private readonly invoiceQueue: InvoiceQueueSingleton,
+    private readonly clientRepository: ClientRepository,
+  ) {}
 
-    async execute(data: CSVModel[]) {
-        await this.clientRepository.insertMultiple(data)
+  async execute(data: CSVModel[]) {
+    await this.clientRepository.insertMultiple(data);
 
-        asyncScheduler.schedule(async () => {
-            for (const item of data) {
-                this.invoiceQueue.pub(item)
-            }
-        })
-    }
+    asyncScheduler.schedule(async () => {
+      for (const item of data) {
+        this.invoiceQueue.pub(item);
+      }
+    });
+  }
 }

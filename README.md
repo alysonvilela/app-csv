@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Projeto Backend
 ## Tecnologias Utilizadas
 
@@ -68,3 +69,16 @@ Cada arquivo foi testado utilizando vitest.
 
 
 <img width="431" alt="Captura de Tela 2024-06-16 às 20 14 44" src="https://github.com/alysonvilela/app-csv/assets/22202745/fea4ed51-87bb-4689-8fc2-ee5b92304bf8">
+=======
+## TODO
+
+- Architecture flow
+- Explain streaming basics
+- Explain the use of PUB/SUBS (would change for kafka/redis or another message broker service)
+- Testing with vitest
+- Docker and docker compose
+- Explain why I started the project with Bun and ended up with PNPM/NPM (clusters and upscaling with PM2)
+- Possible architecture changings: Buckets, Message brokers
+- Services/project next steps: Insert validation (we are still passing through if the PK/unique key exists), Status field and update on demand, Better IOC configuration(typescript-ioc/tsyringe/inversify), When there is a bucket service might be good creating new services/jobs to remove unused files/
+- Swagger
+>>>>>>> Stashed changes

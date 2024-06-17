@@ -1,8 +1,8 @@
 export interface CSVModel {
-    name: string
-    governmentId: number
-    email: string
-    debtAmount: number
-    debtDueDate: Date
-    debtId: string
+  name: string;
+  governmentId: number;
+  email: string;
+  debtAmount: number;
+  debtDueDate: Date;
+  debtId: string;
 }

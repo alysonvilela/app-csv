@@ -18,20 +18,33 @@ export const logger = LoggerSingleton.getInstance();
 export const clientRepository = new PgClientRepository(logger);
 
 // Queues and callbacks
-export const sendEmailCommand = new SendEmailCommand(logger)
-export const emailQueue = EmailQueueSingleton.getInstance((data) => sendEmailCommand.execute(data))
+export const sendEmailCommand = new SendEmailCommand(logger);
+export const emailQueue = EmailQueueSingleton.getInstance((data) =>
+  sendEmailCommand.execute(data),
+);
 
-export const makeInvoiceCommand = new MakeInvoiceCommand(logger, emailQueue)
-export const invoiceQueue = InvoiceQueueSingleton.getInstance((data) => makeInvoiceCommand.execute(data))
+export const makeInvoiceCommand = new MakeInvoiceCommand(logger, emailQueue);
+export const invoiceQueue = InvoiceQueueSingleton.getInstance((data) =>
+  makeInvoiceCommand.execute(data),
+);
 
-
-export const bulkDbInsertCommand = new BulkDbInsertCommand(invoiceQueue, clientRepository)
-export const clientQueue = ClientQueueSingleton.getInstance((data) => bulkDbInsertCommand.execute(data))
+export const bulkDbInsertCommand = new BulkDbInsertCommand(
+  invoiceQueue,
+  clientRepository,
+);
+export const clientQueue = ClientQueueSingleton.getInstance((data) =>
+  bulkDbInsertCommand.execute(data),
+);
 
 // Services
-export const uploadFileUseCase = new UploadFileUseCase(logger, clientQueue)
-export const listClientsUseCase = new ListClientsUseCase(logger, clientRepository)
+export const uploadFileUseCase = new UploadFileUseCase(logger, clientQueue);
+export const listClientsUseCase = new ListClientsUseCase(
+  logger,
+  clientRepository,
+);
 
 // Commands
-export const uploadFileController = new UploadFileController(uploadFileUseCase)
-export const listClientsHistoryController = new ListClientsController(listClientsUseCase)
+export const uploadFileController = new UploadFileController(uploadFileUseCase);
+export const listClientsHistoryController = new ListClientsController(
+  listClientsUseCase,
+);
